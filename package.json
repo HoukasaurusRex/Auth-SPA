@@ -8,9 +8,12 @@
     "api"
   ],
   "scripts": {
-    "client": "yarn workspace client start",
-    "server": "yarn workspace api start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+    "client": "yarn workspace oauth-client start",
+    "client-test": "yarn workspace oauth-client test",
+    "server": "yarn workspace oauth-api start",
+    "server-test": "yarn workspace oauth-api test",
+    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
+    "test": "concurrently --kill-others-on-fail \"yarn server-test\"  \"yarn client-test\""
   },
   "repository": {
     "type": "git"
