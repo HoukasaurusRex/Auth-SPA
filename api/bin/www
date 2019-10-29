@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+require('dotenv-defaults').config()
 const app = require('../app')
 const debug = require('debug')('jwt-auth:server')
 const http = require('http')
