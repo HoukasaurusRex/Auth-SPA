@@ -1,19 +1,21 @@
 {
-  "name": "jwt-auth",
-  "version": "0.0.0",
+  "name": "oauth-examples",
+  "version": "1.0.0",
+  "description": "",
   "private": true,
+  "workspaces": ["client", "api"],
   "scripts": {
-    "start": "node ./bin/www"
+    "client": "yarn workspace client start",
+    "server": "yarn workspace api start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
   },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "morgan": "~1.9.1"
+  "repository": {
+    "type": "git"
   },
-  "main": "app.js",
   "keywords": [],
   "author": "JT Houk <jt1992@gmail.com> (https://jt.houk.space/)",
   "license": "MIT",
-  "description": ""
+  "dependencies": {
+    "concurrently": "^5.0.0"
+  }
 }
