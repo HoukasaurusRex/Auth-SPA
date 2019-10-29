@@ -1,9 +1,12 @@
 {
   "name": "oauth-examples",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "private": true,
-  "workspaces": ["client", "api"],
+  "workspaces": [
+    "client",
+    "api"
+  ],
   "scripts": {
     "client": "yarn workspace client start",
     "server": "yarn workspace api start",
