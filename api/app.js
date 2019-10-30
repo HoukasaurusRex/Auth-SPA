@@ -8,6 +8,12 @@ const passport = require('./services/passport')
 
 const authRouter = require('./routes/auth')
 
+const msDay = 24 * 60 * 60 * 1000
+const sessionOptions = {
+  maxAge: msDay,
+  keys: [process.env.SESSION_KEY]
+}
+
 const app = express()
 
 app.use(helmet())

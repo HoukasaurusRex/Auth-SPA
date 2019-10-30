@@ -1,7 +1,6 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
-// const expressJWT = require('express-jwt')
 const router = express.Router()
 
 const payload = {
@@ -10,15 +9,11 @@ const payload = {
   avatar: 'https://google.com'
 }
 
-const secret = 'secreet'
-
-// router.use(expressJWT({ secret }).unless({ path: ['/users/auth'] }))
-
-router.get('/login', (req, res) => {
+router.post('/email', (req, res) => {
   res.send('logging in')
 })
 
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   res.send('logging out')
 })
 
@@ -28,16 +23,16 @@ router.get(
 )
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.send('hey')
+  res.send(req.user)
 })
 
 router.post('/jwt', (req, res) => {
-  const token = jwt.sign(payload, secret)
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET)
   res.send({ token })
 })
 
 /* GET users listing. */
-router.get('/', (req, res) => {
+router.get('/', passport.isAuthenticated, (req, res) => {
   res.send(req.user)
 })
 

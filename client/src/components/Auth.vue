@@ -1,10 +1,13 @@
 <template>
-  <section>
+  <section class="auth">
     <form>
       <input type="email" v-model="email" />
       <input type="password" v-model="password" />
-      <button type="submit" @click="submit">Submit</button>
+      <button type="submit" @click="authEmail">Submit</button>
     </form>
+    <a href="http://localhost:3030/auth/google">
+      <button type="button">Google</button>
+    </a>
   </section>
 </template>
 <script>
@@ -17,17 +20,20 @@ export default {
     }
   },
   methods: {
-    async submit(e) {
+    async authEmail(e) {
       e.preventDefault()
       const options = {
         method: 'POST',
         body: JSON.stringify({ email: this.email, password: this.password })
       }
-      const res = await fetch('http://localhost:3030/users/auth', options)
+      const res = await fetch('http://localhost:3030/auth/email', options)
       const resBody = await res.json()
       console.log({ resBody })
     }
   }
 }
 </script>
-<style lang="css"></style>
+<style lang="scss">
+.auth {
+}
+</style>

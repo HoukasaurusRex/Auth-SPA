@@ -1,4 +1,4 @@
-# auth-app
+# auth-client
 
 ## Project setup
 ```
