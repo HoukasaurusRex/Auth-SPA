@@ -2,14 +2,9 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const expressJWT = require('express-jwt')
 const GoogleStrategy = require('passport-google-oauth20')
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
 const Users = require('../models/Users')
-
-const generateJWTPayload = user => ({
-  id: user.id,
-  email: user.email,
-  avatar: user.avatar,
-  locale: user.locale
-})
+const { generateUserPayload } = require('../utils/jwt')
 
 // To Client from Server
 passport.serializeUser((user, done) => {
@@ -24,27 +19,52 @@ passport.deserializeUser(async (id, done) => {
 
 passport.isAuthenticated = expressJWT({ secret: process.env.TOKEN_SECRET })
 
+// ANCHOR Google Auth
 const googleOptions = {
-  callbackURL: '/auth/google/redirect',
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET
+  callbackURL: 'http://localhost:3030/auth/google/redirect',
+  clientID: process.env.GOOGLE_ID,
+  clientSecret: process.env.GOOGLE_SECRET
 }
 const googleCallback = async (_accessToken, _refreshToken, profile, done) => {
   const user =
     (await Users.findOne({
-      googleId: profile.id
+      $or: [{ googleId: profile.id }, { email: profile.emails[0].value }]
     })) ||
     (await Users.create({
-      username: profile.displayName,
       googleId: profile.id,
-      avatar: profile['_json'].picture,
-      email: profile['_json'].email,
+      email: profile.emails[0].value,
+      username: profile.displayName,
+      avatar: profile.photos[0].value,
       locale: profile['_json'].locale
     }))
-  const payload = generateJWTPayload(user)
+  const payload = generateUserPayload(user)
   const token = jwt.sign(payload, process.env.TOKEN_SECRET)
   done(null, user)
 }
-passport.use(new GoogleStrategy(googleOptions, googleCallback))
+passport.use('google', new GoogleStrategy(googleOptions, googleCallback))
+
+// ANCHOR LinkedIn Auth
+const linkedinOptions = {
+  clientID: process.env.LINKEDIN_ID,
+  clientSecret: process.env.LINKEDIN_SECRET,
+  callbackURL: 'http://localhost:3030/auth/linkedin/redirect',
+  scope: ['r_emailaddress', 'r_liteprofile']
+}
+const linkedinCallback = async (accessToken, refreshToken, profile, done) => {
+  const user =
+    (await Users.findOne({
+      $or: [{ linkedinId: profile.id }, { email: profile.emails[0].value }]
+    })) ||
+    (await Users.create({
+      linkedinId: profile.id,
+      email: profile.emails[0].value,
+      username: profile.displayName,
+      avatar: profile.photos[1].value
+    }))
+  const payload = generateUserPayload(user)
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET)
+  done(null, user)
+}
+passport.use(new LinkedInStrategy(linkedinOptions, linkedinCallback))
 
 module.exports = passport

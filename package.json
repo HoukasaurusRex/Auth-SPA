@@ -8,9 +8,9 @@
     "api"
   ],
   "scripts": {
-    "client": "yarn workspace oauth-client serve",
+    "client": "NODE_ENV=development yarn workspace oauth-client serve",
     "client-test": "yarn workspace oauth-client test",
-    "server": "yarn workspace oauth-api start",
+    "server": "NODE_ENV=development yarn workspace oauth-api start",
     "server-test": "yarn workspace oauth-api test",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
     "test": "concurrently --kill-others-on-fail \"yarn server-test\"  \"yarn client-test\""
