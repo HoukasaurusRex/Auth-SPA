@@ -8,12 +8,6 @@ const passport = require('./services/passport')
 
 const authRouter = require('./routes/auth')
 
-const msDay = 24 * 60 * 60 * 1000
-const sessionOptions = {
-  maxAge: msDay,
-  keys: [process.env.SESSION_KEY]
-}
-
 const app = express()
 
 app.use(helmet())
@@ -21,7 +15,13 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(cors())
+app.use(
+  cors({
+    // origin must not be a wildcard to receive cross domain cookies
+    origin: 'http://localhost:8080',
+    credentials: true
+  })
+)
 app.use(passport.initialize())
 
 mongoose.connect(

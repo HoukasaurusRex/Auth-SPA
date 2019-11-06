@@ -1,6 +1,7 @@
 <template>
   <div class="oauth-container">
-    <a class="oauth-button" :href="href">{{ name }}</a>
+    <a class="oauth-button" :href="href" @click="onClick">{{ name }}</a>
+    <p v-if="response" class="response">{{ response }}</p>
   </div>
 </template>
 <script>
@@ -11,14 +12,31 @@ export default {
       type: String,
       required: true
     },
-    link: {
-      type: String,
-      required: true
+    path: {
+      type: String
+    },
+    action: {
+      type: String
+    }
+  },
+  data() {
+    return {
+      response: null
     }
   },
   computed: {
     href() {
-      return 'http://localhost:3030' + this.link
+      return this.$store.baseURL + this.path
+    }
+  },
+  methods: {
+    async onClick(e) {
+      if (!this.action) {
+        return
+      }
+      e.preventDefault()
+      const res = await this.$store.dispatch(this.action)
+      this.response = res
     }
   }
 }
@@ -41,5 +59,14 @@ export default {
   &:hover {
     filter: opacity(0.75);
   }
+}
+
+.response {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: 50px;
 }
 </style>

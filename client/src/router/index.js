@@ -1,29 +1,36 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import store from '../store'
+import SignIn from '../views/SignIn.vue'
 
 Vue.use(VueRouter)
+
+const isAuthenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next()
+    return
+  }
+  next('/Unauthorized')
+}
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: SignIn
   },
   {
     path: '/secret-route',
     name: 'secret-route',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    beforeEnter: isAuthenticated,
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/SecretRoute.vue')
   },
   {
-    path: '/signin',
-    name: 'signin',
+    path: '/Unauthorized',
+    name: 'Unauthorized',
     component: () =>
-      import(/* webpackChunkName: "login" */ '../views/SignIn.vue')
+      import(/* webpackChunkName: "about" */ '../views/Unauthorized.vue')
   }
 ]
 

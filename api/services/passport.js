@@ -1,6 +1,7 @@
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const expressJWT = require('express-jwt')
+const uuid = require('uuid/v4')
 const GoogleStrategy = require('passport-google-oauth20')
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
 const Users = require('../models/Users')
@@ -17,7 +18,18 @@ passport.deserializeUser(async (id, done) => {
   done(null, user)
 })
 
-passport.isAuthenticated = expressJWT({ secret: process.env.TOKEN_SECRET })
+// Parse Auth cookies as middleware
+passport.isAuthenticated = expressJWT({
+  secret: process.env.TOKEN_SECRET,
+  getToken(req) {
+    const signature = req.cookies['Auth-Signature']
+    const payload = req.headers['authorization']
+    if (!signature || !payload) {
+      return null
+    }
+    return `${signature}.${payload}`
+  }
+})
 
 // ANCHOR Google Auth
 const googleOptions = {
@@ -32,13 +44,12 @@ const googleCallback = async (_accessToken, _refreshToken, profile, done) => {
     })) ||
     (await Users.create({
       googleId: profile.id,
+      sessionSecret: uuid(),
       email: profile.emails[0].value,
       username: profile.displayName,
       avatar: profile.photos[0].value,
       locale: profile['_json'].locale
     }))
-  const payload = generateUserPayload(user)
-  const token = jwt.sign(payload, process.env.TOKEN_SECRET)
   done(null, user)
 }
 passport.use('google', new GoogleStrategy(googleOptions, googleCallback))
@@ -50,19 +61,18 @@ const linkedinOptions = {
   callbackURL: 'http://localhost:3030/auth/linkedin/redirect',
   scope: ['r_emailaddress', 'r_liteprofile']
 }
-const linkedinCallback = async (accessToken, refreshToken, profile, done) => {
+const linkedinCallback = async (_accessToken, _refreshToken, profile, done) => {
   const user =
     (await Users.findOne({
       $or: [{ linkedinId: profile.id }, { email: profile.emails[0].value }]
     })) ||
     (await Users.create({
       linkedinId: profile.id,
+      sessionSecret: uuid(),
       email: profile.emails[0].value,
       username: profile.displayName,
       avatar: profile.photos[1].value
     }))
-  const payload = generateUserPayload(user)
-  const token = jwt.sign(payload, process.env.TOKEN_SECRET)
   done(null, user)
 }
 passport.use(new LinkedInStrategy(linkedinOptions, linkedinCallback))

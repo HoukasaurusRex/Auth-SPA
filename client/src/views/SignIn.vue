@@ -1,11 +1,12 @@
 <template>
   <section class="login">
-    <h1><span>Login</span> or <span>Sign Up</span></h1>
+    <h1>Authentication SPA</h1>
     <email-auth />
     <div class="buttons">
-      <o-auth-button name="LinkedIn" link="/auth/linkedin" />
-      <o-auth-button name="Google" link="/auth/google" />
-      <o-auth-button name="Verify" link="/auth/verify" />
+      <o-auth-button name="LinkedIn" path="/auth/linkedin" />
+      <o-auth-button name="Google" path="/auth/google" />
+      <o-auth-button name="Verify" action="AUTH_VERIFY" />
+      <o-auth-button name="Logout" action="AUTH_LOGOUT" />
     </div>
   </section>
 </template>

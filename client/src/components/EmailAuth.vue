@@ -1,9 +1,18 @@
 <template>
   <div>
     <form class="form">
-      <input type="email" v-model="email" placeholder="Email" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <button type="submit" @click="authEmail">Submit</button>
+      <label for="email">Email</label>
+      <input type="email" v-model="email" placeholder="me@example.com" />
+      <label for="password">Password</label>
+      <input type="password" v-model="password" placeholder="Password123" />
+      <button
+        type="submit"
+        @click="authEmail"
+        :style="buttonColor"
+        :disabled="isAuthenticated"
+      >
+        {{ status }}
+      </button>
     </form>
   </div>
 </template>
@@ -17,16 +26,30 @@ export default {
       password: ''
     }
   },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated
+    },
+    buttonColor() {
+      return this.isAuthenticated
+        ? '--button-color: hsla(163, 100%, 50%, 1);'
+        : '--button-color: hsla(323, 100%, 50%, 1);'
+    },
+    status() {
+      return this.isAuthenticated ? 'Logged In!' : 'Login'
+    }
+  },
   methods: {
     async authEmail(e) {
       e.preventDefault()
-      const options = {
-        method: 'POST',
-        body: JSON.stringify({ email: this.email, password: this.password })
+      if (this.isAuthenticated) {
+        return
       }
-      const res = await fetch('http://localhost:3030/auth/email', options)
-      const resBody = await res.json()
-      console.log({ resBody })
+      const res = await this.$store.dispatch('AUTH_LOGIN', {
+        email: this.email,
+        password: this.password
+      })
+      return res
     }
   }
 }
@@ -60,12 +83,17 @@ export default {
     min-width: 10rem;
     padding: 0.5rem;
     margin: 1rem auto;
-    background-color: tomato;
+    background-color: var(--button-color);
     border: none;
     border-radius: 0.75rem;
     color: #eee;
     cursor: pointer;
     transition: 0.2s ease-in-out;
+
+    &:disabled {
+      filter: opacity(0.75);
+      cursor: not-allowed;
+    }
 
     &:hover {
       filter: opacity(0.75);

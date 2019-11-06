@@ -1,6 +1,7 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="secret">
+    <h1>Welcome to the Secret Party</h1>
+    <p>There's not much goin on tbh</p>
   </div>
 </template>
 <script>
