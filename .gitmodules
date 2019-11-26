@@ -1,0 +1,6 @@
+[submodule "OAuth-Examples-Client"]
+	path = OAuth-Examples-Client
+	url = git@github.com:HoukasaurusRex/OAuth-Examples-Client.git
+[submodule "OAuth-Examples-API"]
+	path = OAuth-Examples-API
+	url = git@github.com:HoukasaurusRex/OAuth-Examples-API.git
