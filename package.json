@@ -1,17 +1,17 @@
 {
   "name": "oauth-examples",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "private": true,
   "workspaces": [
-    "client",
-    "api"
+    "OAuth-Examples-Client",
+    "OAuth-Examples-API"
   ],
   "scripts": {
-    "client": "NODE_ENV=development yarn workspace oauth-client serve",
-    "client-test": "yarn workspace oauth-client test",
-    "server": "NODE_ENV=development yarn workspace oauth-api start",
-    "server-test": "yarn workspace oauth-api test",
+    "client": "NODE_ENV=development yarn workspace OAuth-Examples-Client serve",
+    "client-test": "yarn workspace OAuth-Examples-Client test",
+    "server": "NODE_ENV=development yarn workspace OAuth-Examples-API start",
+    "server-test": "yarn workspace OAuth-Examples-API test",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
     "test": "concurrently --kill-others-on-fail \"yarn server-test\"  \"yarn client-test\""
   },
