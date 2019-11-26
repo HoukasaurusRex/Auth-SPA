@@ -1,6 +1,6 @@
 {
   "name": "oauth-examples",
-  "version": "1.0.12",
+  "version": "1.0.10",
   "description": "",
   "private": true,
   "workspaces": [
@@ -8,12 +8,15 @@
     "OAuth-Examples-API"
   ],
   "scripts": {
-    "client": "NODE_ENV=development yarn workspace OAuth-Examples-Client serve",
-    "client-test": "yarn workspace OAuth-Examples-Client test",
-    "server": "NODE_ENV=development yarn workspace OAuth-Examples-API start",
-    "server-test": "yarn workspace OAuth-Examples-API test",
+    "client": "NODE_ENV=development yarn workspace oauth-client serve",
+    "client-test": "yarn workspace oauth-client test",
+    "client-deploy": "yarn workspace oauth-client deploy",
+    "server": "NODE_ENV=development yarn workspace oauth-api start",
+    "server-test": "yarn workspace oauth-api test",
+    "server-deploy": "yarn workspace oauth-api deploy",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
-    "test": "concurrently --kill-others-on-fail \"yarn server-test\"  \"yarn client-test\""
+    "test": "concurrently \"yarn server-test\"  \"yarn client-test\"",
+    "deploy":  "concurrently \"yarn server-deploy\"  \"yarn client-deploy\""
   },
   "repository": {
     "type": "git"
