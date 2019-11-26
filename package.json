@@ -1,6 +1,6 @@
 {
   "name": "oauth-examples",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "private": true,
   "workspaces": [
@@ -16,7 +16,7 @@
     "server-deploy": "yarn workspace oauth-api deploy",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
     "test": "concurrently \"yarn server-test\"  \"yarn client-test\"",
-    "deploy":  "concurrently \"yarn server-deploy\"  \"yarn client-deploy\""
+    "deploy": "concurrently \"yarn server-deploy\"  \"yarn client-deploy\""
   },
   "repository": {
     "type": "git"
