@@ -10,7 +10,7 @@ help: ## Output available commands
 	@echo "\n"
 
 client: ## Work in client
-	@code OAuth-Examples-Client -r
+	@code Auth-SPA-Client -r
 
 api: ## Work in API server
-	@code OAuth-Examples-API -r
+	@code Auth-SPA-API -r
