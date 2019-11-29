@@ -1,19 +1,19 @@
 {
-  "name": "oauth-examples",
+  "name": "auth-spa",
   "version": "1.0.13",
   "description": "",
   "private": true,
   "workspaces": [
-    "OAuth-Examples-Client",
-    "OAuth-Examples-API"
+    "Auth-SPA-Client",
+    "Auth-SPA-API"
   ],
   "scripts": {
-    "client": "NODE_ENV=development yarn workspace oauth-client serve",
-    "client-test": "yarn workspace oauth-client test",
-    "client-deploy": "yarn workspace oauth-client deploy",
-    "server": "NODE_ENV=development yarn workspace oauth-api start",
-    "server-test": "yarn workspace oauth-api test",
-    "server-deploy": "yarn workspace oauth-api deploy",
+    "client": "NODE_ENV=development yarn workspace auth-spa-client serve",
+    "client-test": "yarn workspace auth-spa-client test",
+    "client-deploy": "yarn workspace auth-spa-client deploy",
+    "server": "NODE_ENV=development yarn workspace auth-spa-api start",
+    "server-test": "yarn workspace auth-spa-api test",
+    "server-deploy": "yarn workspace auth-spa-api deploy",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
     "test": "concurrently \"yarn server-test\"  \"yarn client-test\"",
     "deploy": "concurrently \"yarn server-deploy\"  \"yarn client-deploy\""
