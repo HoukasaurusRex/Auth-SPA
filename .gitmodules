@@ -4,3 +4,9 @@
 [submodule "OAuth-Examples-API"]
 	path = OAuth-Examples-API
 	url = git@github.com:HoukasaurusRex/OAuth-Examples-API.git
+[submodule "Auth-SPA-Client"]
+	path = Auth-SPA-Client
+	url = git@github.com:HoukasaurusRex/Auth-SPA-Client.git
+[submodule "Auth-SPA-API"]
+	path = Auth-SPA-API
+	url = git@github.com:HoukasaurusRex/Auth-SPA-API.git
